@@ -19,16 +19,16 @@ public class MainActivity extends AppCompatActivity {
     private TextView tvValueOneValue;
     private TextView tvValueTwoValue;
 
-    // Custom broadcast action
-    public static final String CUSTOM_ACTION = "com.blackboxembedded.wunderlinq.ACTION_PERFORMANCE_DATA_AVAILABLE";
+    // WunderLINQ performance data broadcast action
+    public static final String ACTION_PERFORMANCE_DATA_AVAILABLE = "com.blackboxembedded.wunderlinq.ACTION_PERFORMANCE_DATA_AVAILABLE";
 
     // Broadcast receiver for handling the broadcast
     private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             // Check if the received action matches the custom broadcast action
-            if (intent.getAction().equals(CUSTOM_ACTION)) {
-                // Retrieve the data from the intent
+            if (intent.getAction().equals(ACTION_PERFORMANCE_DATA_AVAILABLE)) {
+                // Retrieve the performance data from the intent, see documentation for current key values and meanings.
                 double data1 = intent.getDoubleExtra("odometer", 0);
                 double data2 = intent.getDoubleExtra("voltage", 0);
 
@@ -42,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
+        // Read when button is pressed
         Log.d(TAG, "onKeyDown Keycode: " + keyCode);
         tvOnKeyDownValue.setText("Keycode: " + keyCode);
         return super.onKeyDown(keyCode, event);
@@ -49,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
+        // Read when button is released
         Log.d(TAG, "onKeyUp Keycode: " + keyCode);
         tvOnKeyUpValue.setText("Keycode: " + keyCode);
         return super.onKeyUp(keyCode, event);
@@ -65,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Register the broadcast receiver with the intent filter
         IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(CUSTOM_ACTION);
+        intentFilter.addAction(ACTION_PERFORMANCE_DATA_AVAILABLE);
         registerReceiver(broadcastReceiver, intentFilter);
     }
 
