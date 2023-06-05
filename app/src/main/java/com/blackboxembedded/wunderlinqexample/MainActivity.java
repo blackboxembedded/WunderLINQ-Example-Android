@@ -1,9 +1,11 @@
 package com.blackboxembedded.wunderlinqexample;
 
+import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -33,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
                 double data2 = intent.getDoubleExtra("voltage", 0);
 
                 // Display the received data
-                Log.d(TAG,"Data 1: " + data1 + "\nData 2: " + data2);
+                Log.d(TAG,"Odometer: " + data1 + ", Voltage: " + data2);
                 tvValueOneValue.setText(data1 + " km");
                 tvValueTwoValue.setText(data2 + " V");
             }
@@ -53,7 +55,21 @@ public class MainActivity extends AppCompatActivity {
         // Read when button is released
         Log.d(TAG, "onKeyUp Keycode: " + keyCode);
         tvOnKeyUpValue.setText("Keycode: " + keyCode);
-        return super.onKeyUp(keyCode, event);
+        switch (keyCode) {
+            case KeyEvent.KEYCODE_ESCAPE:
+                // Capture Escape Press to launch WunderLINQ app
+                String wunderLINQApp = "wunderlinq://";
+                Intent intent = new
+                        Intent(android.content.Intent.ACTION_VIEW);
+                intent.setData(Uri.parse(wunderLINQApp));
+                try {
+                    startActivity(intent);
+                } catch ( ActivityNotFoundException ex  ) {
+                }
+                return true;
+            default:
+                return super.onKeyUp(keyCode, event);
+        }
     }
 
     @Override
