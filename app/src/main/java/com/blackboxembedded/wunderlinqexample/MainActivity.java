@@ -26,6 +26,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.WindowManager;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -73,9 +74,13 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG, "onKeyUp Keycode: " + keyCode);
         tvOnKeyUpValue.setText("Keycode: " + keyCode);
         switch (keyCode) {
+            case KeyEvent.KEYCODE_ENTER:
+                SoundManager.playSound(this, R.raw.enter);
+                return true;
             case KeyEvent.KEYCODE_ESCAPE:
+                SoundManager.playSound(this, R.raw.enter);
                 // Capture Escape Press to launch WunderLINQ app
-                String wunderLINQApp = "wunderlinq://";
+                String wunderLINQApp = "wunderlinq://datagrid";
                 Intent intent = new
                         Intent(android.content.Intent.ACTION_VIEW);
                 intent.setData(Uri.parse(wunderLINQApp));
@@ -85,6 +90,7 @@ public class MainActivity extends AppCompatActivity {
                 }
                 return true;
             default:
+                SoundManager.playSound(this, R.raw.directional);
                 return super.onKeyUp(keyCode, event);
         }
     }
@@ -97,6 +103,9 @@ public class MainActivity extends AppCompatActivity {
         tvOnKeyDownValue = findViewById(R.id.tvOnKeyDownValue);
         tvValueOneValue = findViewById(R.id.tvValueOneValue);
         tvValueTwoValue = findViewById(R.id.tvValueTwoValue);
+
+        // Keep screen on
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         // Register the broadcast receiver with the intent filter
         IntentFilter intentFilter = new IntentFilter();
