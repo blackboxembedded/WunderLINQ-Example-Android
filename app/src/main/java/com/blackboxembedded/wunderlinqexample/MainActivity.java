@@ -30,6 +30,7 @@ import android.view.WindowManager;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 public class MainActivity extends AppCompatActivity {
     public final static String TAG = "MainActivity";
@@ -110,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
         // Register the broadcast receiver with the intent filter
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(ACTION_PERFORMANCE_DATA_AVAILABLE);
-        registerReceiver(broadcastReceiver, intentFilter);
+        ContextCompat.registerReceiver(this, broadcastReceiver, intentFilter, ContextCompat.RECEIVER_EXPORTED);
     }
 
     @Override
